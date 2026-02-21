@@ -1,34 +1,34 @@
 {
   "serverInfo": {
-    "name": "EzBiz Business Intelligence",
-    "description": "AI-powered business intelligence MCP server. Competitive analysis, web presence scoring, review analysis, and market research — available via the Model Context Protocol.",
+    "name": "EzBiz Social Media Analytics",
+    "description": "AI-powered social media analytics via MCP. Profile analysis, engagement scoring, trend detection, and hashtag research across major platforms.",
     "version": "1.0.0",
-    "homepage": "https://mcp.ezbizservices.com",
+    "homepage": "https://social.ezbizservices.com",
     "transport": "streamable-http",
-    "endpoint": "https://mcp.ezbizservices.com/mcp"
+    "endpoint": "https://social.ezbizservices.com/mcp"
   },
   "tools": [
     {
-      "name": "analyze_competitors",
-      "description": "Analyze the competitive landscape for a business. Returns competitor profiles, market positioning, strengths/weaknesses, and strategic recommendations."
+      "name": "analyze_profile",
+      "description": "Analyze a social media profile or brand presence — posting patterns, content themes, audience indicators, and growth recommendations."
     },
     {
-      "name": "score_web_presence",
-      "description": "Score a website's online presence (0-100) across SEO, performance, content, social media, and trust signals."
+      "name": "score_engagement",
+      "description": "Score social media engagement for a brand or topic — engagement rate estimates, content effectiveness, posting time analysis, and benchmarks."
     },
     {
-      "name": "analyze_reviews",
-      "description": "Analyze a business's online reviews and reputation. Returns sentiment analysis, key themes, and recommendations."
+      "name": "detect_trends",
+      "description": "Detect trending topics and conversations in a niche — viral content patterns, emerging topics, sentiment shifts, and opportunity alerts."
     },
     {
-      "name": "market_research",
-      "description": "Conduct market research on an industry. Returns market size, trends, opportunities, and customer segments."
+      "name": "research_hashtags",
+      "description": "Research effective hashtags for a topic — popularity estimates, related hashtags, niche classification, and recommended hashtag sets."
     }
   ],
   "authentication": {
     "type": "api-key",
     "header": "X-API-Key",
-    "signupUrl": "https://mcp.ezbizservices.com/signup"
+    "signupUrl": "https://social.ezbizservices.com/signup"
   },
   "pricing": {
     "free": { "price": 0, "requestsPerMonth": 10 },
