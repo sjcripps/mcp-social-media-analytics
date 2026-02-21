@@ -1,0 +1,21 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.ezbizservices/social-media",
+  "title": "EzBiz Social Media Analytics",
+  "description": "AI-powered social media intelligence — profile analysis, engagement scoring, trend detection, and hashtag research across major platforms.",
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://social.ezbizservices.com/mcp",
+      "headers": [
+        {
+          "name": "x-api-key",
+          "description": "Your EzBiz API key. Get a free key at https://social.ezbizservices.com",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}

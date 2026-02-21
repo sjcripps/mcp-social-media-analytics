@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Docs — EzBiz Social Media Analytics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<nav>
+  <div class="container">
+    <a href="/" class="logo"><span>EzBiz</span> Social Media Analytics</a>
+    <div class="nav-links">
+      <a href="/docs">Docs</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/signup" class="btn-nav">Get Free API Key</a>
+    </div>
+  </div>
+</nav>
+<div class="container docs-container">
+  <h1>Documentation</h1>
+  <h2>Connection</h2>
+  <p>Server URL: <code>https://social.ezbizservices.com/mcp</code></p>
+  <p>Auth: Pass your API key as <code>X-API-Key</code> header or <code>api_key</code> query parameter.</p>
+
+  <h2>Tools</h2>
+  <div class="docs-tools"><h3> analyze_profile<br>Analyze a social media profile or brand presence — posting patterns, content themes, audience indicators, and growth recommendations.<br><br><strong>Parameters:<strong><br>  - <strong>username<strong> (string): Social media username or handle<br>  - <strong>platform<strong> (string, optional): Platform (twitter, instagram, linkedin, facebook, tiktok)<br>  - <strong>business_name<strong> (string, optional): Business name for broader search<br><br><h3> score_engagement<br>Score social media engagement for a brand or topic — engagement rate estimates, content type effectiveness, posting time analysis, and benchmarks.<br><br><strong>Parameters:<strong><br>  - <strong>brand_or_topic<strong> (string): Brand name or topic to analyze<br>  - <strong>platform<strong> (string, optional): Platform to focus on (optional, analyzes all if omitted)<br><br><h3> detect_trends<br>Detect trending topics and conversations in a niche — viral content patterns, emerging topics, sentiment shifts, and opportunity alerts.<br><br><strong>Parameters:<strong><br>  - <strong>niche<strong> (string): Industry or niche to monitor<br>  - <strong>timeframe<strong> (string, optional): Timeframe: today, this_week, this_month<br><br><h3> research_hashtags<br>Research effective hashtags for a topic — popularity estimates, related hashtags, niche vs broad classification, and recommended hashtag sets.<br><br><strong>Parameters:<strong><br>  - <strong>topic<strong> (string): Topic or keyword for hashtag research<br>  - <strong>platform<strong> (string, optional): Target platform (instagram, twitter, tiktok, linkedin)<br>  - <strong>count<strong> (number, optional): Number of hashtags to return (default 20)</div>
+
+  <h2>API Endpoints</h2>
+  <ul>
+    <li><code>POST /mcp</code> — MCP protocol endpoint</li>
+    <li><code>POST /api/keys/signup</code> — Create free API key (body: {name, email})</li>
+    <li><code>GET /api/keys/usage?key=YOUR_KEY</code> — Check usage</li>
+    <li><code>GET /api/pricing</code> — View pricing tiers</li>
+    <li><code>GET /health</code> — Health check</li>
+  </ul>
+</div>
+<footer><div class="container"><p>&copy; 2026 EzBiz Services.</p></div></footer>
+</body>
+</html>

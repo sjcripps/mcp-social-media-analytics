@@ -1,0 +1,39 @@
+{
+  "serverInfo": {
+    "name": "EzBiz Business Intelligence",
+    "description": "AI-powered business intelligence MCP server. Competitive analysis, web presence scoring, review analysis, and market research — available via the Model Context Protocol.",
+    "version": "1.0.0",
+    "homepage": "https://mcp.ezbizservices.com",
+    "transport": "streamable-http",
+    "endpoint": "https://mcp.ezbizservices.com/mcp"
+  },
+  "tools": [
+    {
+      "name": "analyze_competitors",
+      "description": "Analyze the competitive landscape for a business. Returns competitor profiles, market positioning, strengths/weaknesses, and strategic recommendations."
+    },
+    {
+      "name": "score_web_presence",
+      "description": "Score a website's online presence (0-100) across SEO, performance, content, social media, and trust signals."
+    },
+    {
+      "name": "analyze_reviews",
+      "description": "Analyze a business's online reviews and reputation. Returns sentiment analysis, key themes, and recommendations."
+    },
+    {
+      "name": "market_research",
+      "description": "Conduct market research on an industry. Returns market size, trends, opportunities, and customer segments."
+    }
+  ],
+  "authentication": {
+    "type": "api-key",
+    "header": "X-API-Key",
+    "signupUrl": "https://mcp.ezbizservices.com/signup"
+  },
+  "pricing": {
+    "free": { "price": 0, "requestsPerMonth": 10 },
+    "starter": { "price": 19, "requestsPerMonth": 200 },
+    "pro": { "price": 49, "requestsPerMonth": 1000 },
+    "business": { "price": 99, "requestsPerMonth": 5000 }
+  }
+}

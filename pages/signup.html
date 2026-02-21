@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get API Key — EzBiz Social Media Analytics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<nav>
+  <div class="container">
+    <a href="/" class="logo"><span>EzBiz</span> Social Media Analytics</a>
+    <div class="nav-links">
+      <a href="/docs">Docs</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/signup" class="btn-nav">Get Free API Key</a>
+    </div>
+  </div>
+</nav>
+<div class="container signup-container">
+  <h1>Get Your Free API Key</h1>
+  <p>10 requests/month on the free tier. No credit card required.</p>
+  <form id="signup-form" class="signup-form">
+    <input type="text" id="name" placeholder="Your name" required>
+    <input type="email" id="email" placeholder="Email address" required>
+    <button type="submit" class="btn btn-primary">Get API Key</button>
+  </form>
+  <div id="result" class="result hidden"></div>
+</div>
+<script>
+document.getElementById('signup-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const result = document.getElementById('result');
+  try {
+    const res = await fetch('/api/keys/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      result.innerHTML = '<h3>Your API Key</h3><code class="api-key">' + data.key + '</code><p>Save this key — it won\'t be shown again. Free tier: ' + data.limit + ' requests/month.</p>';
+      result.className = 'result success';
+    } else {
+      result.innerHTML = '<p>' + (data.error || 'Something went wrong') + '</p>';
+      result.className = 'result error';
+    }
+  } catch (err) {
+    result.innerHTML = '<p>Network error. Please try again.</p>';
+    result.className = 'result error';
+  }
+});
+</script>
+<footer><div class="container"><p>&copy; 2026 EzBiz Services.</p></div></footer>
+</body>
+</html>
