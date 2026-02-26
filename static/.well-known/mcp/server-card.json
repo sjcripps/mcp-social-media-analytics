@@ -1,28 +1,65 @@
 {
   "serverInfo": {
     "name": "EzBiz Social Media Analytics",
-    "description": "AI-powered social media analytics via MCP. Profile analysis, engagement scoring, trend detection, and hashtag research across major platforms.",
+    "description": "AI-powered social media analytics MCP server for Claude, Cursor, Windsurf, and any MCP client. 4 tools: profile analysis, engagement scoring, trend detection, and hashtag research across Twitter, Instagram, LinkedIn, Facebook, and TikTok. Get actionable social insights powered by GPT-4o in real time. Free tier available — 10 API calls/month. Built by EzBiz Services.",
     "version": "1.0.0",
     "homepage": "https://social.ezbizservices.com",
+    "repository": "https://github.com/ezbiz-services/mcp-social-media",
+    "license": "MIT",
+    "icon": "https://raw.githubusercontent.com/ezbiz-services/mcp-social-media/main/static/icon.svg",
     "transport": "streamable-http",
     "endpoint": "https://social.ezbizservices.com/mcp"
   },
   "tools": [
     {
       "name": "analyze_profile",
-      "description": "Analyze a social media profile or brand presence — posting patterns, content themes, audience indicators, and growth recommendations."
+      "description": "Analyze a social media profile or brand presence — posting patterns, content themes, audience indicators, and growth recommendations.",
+      "inputSchema": {
+        "type": "object",
+        "required": ["username"],
+        "properties": {
+          "username": { "type": "string", "description": "Social media username or handle" },
+          "platform": { "type": "string", "enum": ["twitter", "instagram", "linkedin", "facebook", "tiktok"], "description": "Social media platform to analyze" },
+          "business_name": { "type": "string", "description": "Business name for broader cross-platform search" }
+        }
+      }
     },
     {
       "name": "score_engagement",
-      "description": "Score social media engagement for a brand or topic — engagement rate estimates, content effectiveness, posting time analysis, and benchmarks."
+      "description": "Score social media engagement for a brand or topic — engagement rate estimates, content effectiveness, posting time analysis, and benchmarks.",
+      "inputSchema": {
+        "type": "object",
+        "required": ["brand_or_topic"],
+        "properties": {
+          "brand_or_topic": { "type": "string", "description": "Brand name or topic to analyze" },
+          "platform": { "type": "string", "enum": ["twitter", "instagram", "linkedin", "facebook", "tiktok"], "description": "Platform to focus on" }
+        }
+      }
     },
     {
       "name": "detect_trends",
-      "description": "Detect trending topics and conversations in a niche — viral content patterns, emerging topics, sentiment shifts, and opportunity alerts."
+      "description": "Detect trending topics and conversations in a niche — viral content patterns, emerging topics, sentiment shifts, and opportunity alerts.",
+      "inputSchema": {
+        "type": "object",
+        "required": ["niche"],
+        "properties": {
+          "niche": { "type": "string", "description": "Industry or niche to monitor" },
+          "timeframe": { "type": "string", "enum": ["today", "this_week", "this_month"], "description": "Timeframe for trend analysis" }
+        }
+      }
     },
     {
       "name": "research_hashtags",
-      "description": "Research effective hashtags for a topic — popularity estimates, related hashtags, niche classification, and recommended hashtag sets."
+      "description": "Research effective hashtags for a topic — popularity estimates, related hashtags, niche classification, and recommended hashtag sets.",
+      "inputSchema": {
+        "type": "object",
+        "required": ["topic"],
+        "properties": {
+          "topic": { "type": "string", "description": "Topic or keyword for hashtag research" },
+          "platform": { "type": "string", "enum": ["instagram", "twitter", "tiktok", "linkedin"], "description": "Target platform for hashtag optimization" },
+          "count": { "type": "number", "minimum": 1, "maximum": 50, "description": "Number of hashtags to return (default: 20)" }
+        }
+      }
     }
   ],
   "authentication": {
