@@ -1,7 +1,7 @@
 import { appendFile, mkdir } from "fs/promises";
 import { join } from "path";
 
-const LOG_DIR = join(import.meta.dir, "..", "logs");
+const LOG_DIR = join(import.meta.dir || process.cwd(), "..", "logs");
 
 async function ensureLogDir() {
   await mkdir(LOG_DIR, { recursive: true });
