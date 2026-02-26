@@ -47,8 +47,8 @@ AI-powered social media analytics tools via the [Model Context Protocol (MCP)](h
 ## Self-Hosting
 
 ```bash
-git clone https://github.com/sjcripps/mcp-social-media-analytics.git
-cd mcp-social-media-analytics
+git clone https://github.com/ezbiz-services/mcp-social-media.git
+cd mcp-social-media
 bun install
 
 cp .env.example .env
