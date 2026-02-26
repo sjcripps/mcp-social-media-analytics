@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import { randomBytes } from "crypto";
 
-const DATA_DIR = join(import.meta.dir, "..", "data");
+const DATA_DIR = join(import.meta.dir || process.cwd(), "..", "data");
 const KEYS_FILE = join(DATA_DIR, "api-keys.json");
 
 export type Tier = "free" | "starter" | "pro" | "business";
