@@ -2,9 +2,90 @@ import { searchWeb, fetchPage } from "../lib/scraper";
 import { analyze } from "../lib/openai";
 import { log } from "../lib/logger";
 
+const XQUIK_SEARCH_URL = "https://xquik.com/api/v1/x/tweets/search";
+const XQUIK_API_CONTRACT = "2026-04-29";
+
 export interface DetectTrendsInput {
   niche: string;
   timeframe?: string;
+}
+
+interface XquikTweet {
+  id: string;
+  text: string;
+  author?: {
+    username?: string;
+  };
+  createdAt?: string;
+  likeCount?: number;
+  quoteCount?: number;
+  replyCount?: number;
+  retweetCount?: number;
+  viewCount?: number;
+}
+
+interface XquikSearchResponse {
+  tweets?: XquikTweet[];
+}
+
+function getXquikApiKey(): string | null {
+  const key = process.env.XQUIK_API_KEY?.trim();
+  return key ? key : null;
+}
+
+function formatMetric(name: string, value?: number): string | null {
+  return typeof value === "number" ? `${name}: ${value}` : null;
+}
+
+function summarizeTweetMetrics(tweet: XquikTweet): string {
+  return [
+    formatMetric("likes", tweet.likeCount),
+    formatMetric("replies", tweet.replyCount),
+    formatMetric("reposts", tweet.retweetCount),
+    formatMetric("quotes", tweet.quoteCount),
+    formatMetric("views", tweet.viewCount),
+  ]
+    .filter((metric): metric is string => Boolean(metric))
+    .join(", ");
+}
+
+async function searchXquikTweets(
+  query: string
+): Promise<{ title: string; url: string; snippet: string }[]> {
+  const apiKey = getXquikApiKey();
+  if (!apiKey) return [];
+
+  const url = new URL(XQUIK_SEARCH_URL);
+  url.searchParams.set("q", query);
+  url.searchParams.set("limit", "10");
+  url.searchParams.set("queryType", "Latest");
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        "x-api-key": apiKey,
+        "xquik-api-contract": XQUIK_API_CONTRACT,
+      },
+      signal: AbortSignal.timeout(10000),
+    });
+
+    if (!response.ok) return [];
+
+    const data = (await response.json()) as XquikSearchResponse;
+    return (data.tweets || []).slice(0, 10).map((tweet) => {
+      const username = tweet.author?.username
+        ? `@${tweet.author.username}`
+        : "X post";
+      const metrics = summarizeTweetMetrics(tweet);
+      return {
+        title: `${username}${tweet.createdAt ? ` on ${tweet.createdAt}` : ""}`,
+        url: `https://x.com/i/web/status/${tweet.id}`,
+        snippet: metrics ? `${tweet.text} (${metrics})` : tweet.text,
+      };
+    });
+  } catch {
+    return [];
+  }
 }
 
 export async function detectTrends(
@@ -66,6 +147,8 @@ export async function detectTrends(
     socialResults.push(...results);
   }
 
+  const xquikResults = await searchXquikTweets(`${niche} ${timeframeLabel}`);
+
   // Step 4: AI analysis
   const searchContext = unique
     .slice(0, 20)
@@ -74,6 +157,10 @@ export async function detectTrends(
 
   const socialContext = socialResults
     .map((r) => `- ${r.title}: ${r.snippet}`)
+    .join("\n");
+
+  const xquikContext = xquikResults
+    .map((r) => `- ${r.title}: ${r.snippet} (${r.url})`)
     .join("\n");
 
   const report = await analyze(
@@ -106,17 +193,17 @@ For each trend (identify 5-8):
 
 ### Emerging Topics
 Topics that aren't mainstream yet but showing early growth signals:
-- [Topic 1] — why it matters, early indicators
-- [Topic 2] — why it matters, early indicators
-- [Topic 3] — why it matters, early indicators
+- [Topic 1] - why it matters, early indicators
+- [Topic 2] - why it matters, early indicators
+- [Topic 3] - why it matters, early indicators
 
 ### Content Opportunities
 Specific content ideas based on current trends:
-1. [Content idea] — format, platform, timing, expected resonance
-2. [Content idea] — format, platform, timing, expected resonance
-3. [Content idea] — format, platform, timing, expected resonance
-4. [Content idea] — format, platform, timing, expected resonance
-5. [Content idea] — format, platform, timing, expected resonance
+1. [Content idea] - format, platform, timing, expected resonance
+2. [Content idea] - format, platform, timing, expected resonance
+3. [Content idea] - format, platform, timing, expected resonance
+4. [Content idea] - format, platform, timing, expected resonance
+5. [Content idea] - format, platform, timing, expected resonance
 
 ### Trend Alerts
 - Topics to avoid (oversaturated or risky)
@@ -133,6 +220,9 @@ ${searchContext}
 Social Discussion Data:
 ${socialContext}
 
+Xquik Recent X Posts:
+${xquikContext || "No Xquik data available. Set XQUIK_API_KEY to include this optional source."}
+
 Detailed Page Analysis:
 ${JSON.stringify(trendPages.filter((p) => p.textPreview), null, 2)}
 
@@ -144,6 +234,7 @@ Detect current trends and provide actionable content opportunities.`,
     niche,
     timeframe: tf,
     sources_found: unique.length,
+    xquik_sources_found: xquikResults.length,
   });
 
   return report;
